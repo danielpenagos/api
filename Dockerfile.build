@@ -18,16 +18,19 @@ FROM openjdk:8-jre
 
 VOLUME ["/hygieia/logs"]
 
-RUN mkdir /hygieia/config
+RUN mkdir -p /hygieia/config
 
 EXPOSE 8080
 
-ENV PROP_FILE /hygieia/config/application.properties
+#ENV PROP_FILE /hygieia/config/application.properties
 
 WORKDIR /hygieia
 
 COPY --from=build target/*.jar /hygieia/
 COPY docker/properties-builder.sh /hygieia/
+#COPY C:\\workspaces\\java\\hygieia\\api\\src\\main\\resources\\application.properties /hygieia/config/application.properties
 
-CMD ./properties-builder.sh &&\
-  java -Djava.security.egd=file:/dev/./urandom -jar *.jar --spring.config.location=$PROP_FILE
+#RUN ls /hygieia/config
+
+#CMD ./properties-builder.sh && java -Djava.security.egd=file:/dev/./urandom -jar *.jar --spring.config.location=$PROP_FILE
+CMD java -Djava.security.egd=file:/dev/./urandom -jar *.jar
